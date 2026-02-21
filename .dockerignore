@@ -1,0 +1,32 @@
+node_modules/
+.git/
+.gitignore
+.env
+.DS_Store
+Thumbs.db
+
+# Hardhat build artifacts (rebuilt inside container)
+artifacts/
+cache/
+typechain-types/
+
+# IDE
+.vscode/
+.idea/
+
+# Docker volumes
+docker/data/
+
+# Generated deployments
+deployments/
+
+# SQLite databases
+relayer/data/*.db
+relayer/data/*.db-journal
+
+# Test artifacts
+tests/recovery_test.db
+
+# Documentation (optional, not needed at runtime)
+*.md
+!README.md

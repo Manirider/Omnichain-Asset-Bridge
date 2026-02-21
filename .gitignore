@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Hardhat
+cache/
+artifacts/
+typechain-types/
+
+# Environment
+.env
+
+# SQLite
+relayer/data/*.db
+relayer/data/*.db-journal
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docker volumes
+docker/data/
+
+# Deployments (generated)
+deployments/
+
+# Test artifacts
+tests/*.db

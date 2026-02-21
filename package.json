@@ -1,0 +1,28 @@
+{
+  "name": "omnichain-asset-bridge",
+  "version": "1.0.0",
+  "description": "Local Omnichain Asset Bridge with Governance Recovery System",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy:chainA": "npx hardhat run scripts/deployChainA.js --network chainA",
+    "deploy:chainB": "npx hardhat run scripts/deployChainB.js --network chainB",
+    "deploy:all": "npm run deploy:chainA && npm run deploy:chainB",
+    "relayer": "node relayer/src/index.js",
+    "test": "npx hardhat test tests/chainA.test.js tests/chainB.test.js tests/governance.test.js tests/invariant.test.js tests/replay.test.js",
+    "test:integration": "node tests/integration.test.js",
+    "test:invariant": "node tests/invariant.test.js",
+    "test:governance": "node tests/governance.test.js",
+    "test:replay": "node tests/replay.test.js",
+    "test:recovery": "node tests/recovery.test.js"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.4"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.22.17"
+  }
+}

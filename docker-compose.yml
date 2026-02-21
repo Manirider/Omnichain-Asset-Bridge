@@ -1,0 +1,81 @@
+services:
+  chain-a:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bridge-chain-a
+    ports:
+      - "8545:8545"
+    command: sh docker/start-chain-a.sh
+    environment:
+      - HARDHAT_CHAIN_ID=1111
+      - CHAIN_A_RPC_URL=http://localhost:8545
+      - CHAIN_B_RPC_URL=http://chain-b:9545
+      - DEPLOYER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+    volumes:
+      - deployments:/app/deployments
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "-X", "POST", "-H", "Content-Type: application/json", "-d", "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}", "http://localhost:8545"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - bridge-net
+
+  chain-b:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bridge-chain-b
+    ports:
+      - "9545:9545"
+    command: sh docker/start-chain-b.sh
+    environment:
+      - HARDHAT_CHAIN_ID=2222
+      - CHAIN_A_RPC_URL=http://chain-a:8545
+      - CHAIN_B_RPC_URL=http://localhost:9545
+      - DEPLOYER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+    volumes:
+      - deployments:/app/deployments
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "-X", "POST", "-H", "Content-Type: application/json", "-d", "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}", "http://localhost:9545"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - bridge-net
+
+  relayer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bridge-relayer
+    command: sh docker/start-relayer.sh
+    environment:
+      - CHAIN_A_RPC_URL=http://chain-a:8545
+      - CHAIN_B_RPC_URL=http://chain-b:9545
+      - DEPLOYER_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+      - CONFIRMATION_DEPTH=3
+      - DB_PATH=/app/relayer/data/relayer.db
+      - DEPLOYMENTS_PATH=/app/deployments
+    depends_on:
+      chain-a:
+        condition: service_healthy
+      chain-b:
+        condition: service_healthy
+    volumes:
+      - deployments:/app/deployments
+      - relayer-data:/app/relayer/data
+    networks:
+      - bridge-net
+    restart: on-failure
+
+volumes:
+  deployments:
+  relayer-data:
+
+networks:
+  bridge-net:
+    driver: bridge
