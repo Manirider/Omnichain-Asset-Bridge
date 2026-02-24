@@ -269,5 +269,6 @@ architecture.md                # Detailed technical architecture
 
 ## Author
 
-MANIKANTA SURYASAI
+MANIKANTA SURYASAI-
+
 AIML ENGINEER AND BLOCKCHAIN DEVELOPER
