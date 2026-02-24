@@ -2,8 +2,6 @@
 
 A production-quality, two-chain local asset bridge with cross-chain governance, crash recovery, and Docker orchestration. Built to DeFi infrastructure standards using the Lock/Mint and Burn/Unlock pattern.
 
----
-
 ## Overview
 
 This system bridges `VaultToken (VLT)` from **Chain A (Settlement, chainId 1111)** to **Chain B (Execution, chainId 2222)** as `WrappedVaultToken (wVLT)`, and back. A Node.js relayer watches both chains for events, enforces confirmation depth, persists state in SQLite, and recovers automatically after crashes. Token-weighted governance on Chain B can trigger emergency pause on Chain A through the relayer.
@@ -268,3 +266,8 @@ Dockerfile                     # Node.js + Hardhat build image
 .env.example                   # Environment configuration template
 architecture.md                # Detailed technical architecture
 ```
+
+## Author
+
+MANIKANTA SURYASAI
+AIML ENGINEER AND BLOCKCHAIN DEVELOPER
